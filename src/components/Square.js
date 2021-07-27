@@ -9,7 +9,7 @@ const SquareComponent = styled.div`
   display: flex;
   font-size: 3em;
   justify-content: center;
-  min-height: 9vh;
+  min-height: 10vh;
 
   .empty&:hover {
     background-color: #c3c3c3;
@@ -23,8 +23,11 @@ const SquareComponent = styled.div`
 function Square(props) {
   const {
     chance,
+    finished,
     position,
     setChance,
+    updateBoard,
+    updateMoves,
   } = props;
 
   let [className, setClassName] = useState('empty');
@@ -32,18 +35,20 @@ function Square(props) {
   let [value, setValue] = useState('');
 
   const onHover = (value) => {
-    if (clicked === false) {
+    if (finished === false && clicked === false) {
       setValue(value);
       setClassName('empty');
     }
   }
 
   const onChance = () => {
-    if (clicked === false) {
-      setClicked(true);
-      setChance(chance === 'X' ? 'O' : 'X');
+    if (finished === false && clicked === false) {
       setValue(chance);
+      updateBoard(position, chance);
+      updateMoves(position, chance);
       setClassName('');
+      setChance(chance === 'X' ? 'O' : 'X');
+      setClicked(true);
     }
   }
 
